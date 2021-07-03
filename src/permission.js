@@ -64,3 +64,43 @@
 //   NProgress.done()
 // })
 // // ====================我写的版本
+// 控制访问权限 有无token
+import router from '@/router' // 路由实例
+import store from '@/store' // vuex store实例
+// 加载的进度条
+import NProgress from 'nprogress' // progress bar
+import 'nprogress/nprogress.css' // progress bar style
+
+// 白名单 无需token也可访问的页面
+const whiteList = ['/login', '/404']
+
+// 添加前门保安=>根据是否有token拦截页面的访问
+/**
+ * to 去哪里
+ * from 从哪个页面跳转过来
+ * next 是否放行
+ */
+router.beforeEach((to, from, next) => {
+  // 开启进度条
+  NProgress.start()
+  if (store.getters.token) {
+    // 存在token
+    if (to.path === '/login') {
+      // 为了避免重复登陆=>跳转到首页
+      next('/')
+    } else {
+      // 有token且访问的不是登录页
+      next()
+    }
+  } else {
+    // 不存在token
+    if (whiteList.includes(to.path)) {
+      // 在白名单内有的就直接放行
+      next()
+    } else {
+      next('/login')
+    }
+  }
+  // 关闭进度条
+  NProgress.done()
+})

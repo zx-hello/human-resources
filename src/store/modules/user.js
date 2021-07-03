@@ -1,97 +1,46 @@
-import { login, logout, getInfo } from '@/api/user'
+/**
+ * 用户相关数据维护和管理模块(token、登陆人的信息)
+ */
+// 导入token存储
 import { getToken, setToken, removeToken } from '@/utils/auth'
-import { resetRouter } from '@/router'
-
-const getDefaultState = () => {
-  return {
-    token: getToken(),
-    name: '',
-    avatar: ''
-  }
-}
-
-const state = getDefaultState()
-
-const mutations = {
-  RESET_STATE: (state) => {
-    Object.assign(state, getDefaultState())
-  },
-  SET_TOKEN: (state, token) => {
-    state.token = token
-  },
-  SET_NAME: (state, name) => {
-    state.name = name
-  },
-  SET_AVATAR: (state, avatar) => {
-    state.avatar = avatar
-  }
-}
-
-const actions = {
-  // user login
-  login({ commit }, userInfo) {
-    const { username, password } = userInfo
-    return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
-    })
-  },
-
-  // get user info
-  getInfo({ commit, state }) {
-    return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
-        const { data } = response
-
-        if (!data) {
-          return reject('Verification failed, please Login again.')
-        }
-
-        const { name, avatar } = data
-
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
-        resolve(data)
-      }).catch(error => {
-        reject(error)
-      })
-    })
-  },
-
-  // user logout
-  logout({ commit, state }) {
-    return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
-        removeToken() // must remove  token  first
-        resetRouter()
-        commit('RESET_STATE')
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
-    })
-  },
-
-  // remove token
-  resetToken({ commit }) {
-    return new Promise(resolve => {
-      removeToken() // must remove  token  first
-      commit('RESET_STATE')
-      resolve()
-    })
-  }
-}
-
+// 导入login请求
+import { login } from '@/api/user'
 export default {
+  // 开启命名模块化
   namespaced: true,
-  state,
-  mutations,
-  actions
+  // 存和定义用户数据
+  state: {
+    // 登陆后的token数据
+    // 先从本地读取，读取不到才是空
+    token: getToken() || ''
+  },
+  // 修改state中定义的数据(同步)
+  mutations: {
+    // 存token的方法
+    /**
+     *
+     * @param {*} state 所有state数据
+     * @param {*} token 外部传递的参数(payload)
+     */
+    updateToken (state, token) {
+      state.token = token
+      // 本地存储
+      setToken(token)
+    },
+    // 删除token
+    delToken (state) {
+      state.token = ''
+      removeToken()
+    }
+  },
+  // 异步请求 获取后台数据
+  actions: {
+    // 调用登录接口=>获取token数据
+    async loginAction ({ commit }, payload) {
+      // 调用接口
+      const token = await login(payload)
+      // 存token
+      commit('updateToken', token)
+    }
+  }
 }
-

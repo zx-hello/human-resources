@@ -6,13 +6,17 @@
 
 <script>
 import { mapGetters } from 'vuex'
-
+import { getUserInfo } from '@/api/user'
 export default {
   name: 'Dashboard',
   computed: {
     ...mapGetters([
       'name'
     ])
+  },
+  async created () {
+    const data = await getUserInfo()
+    console.log('登陆人信息', data)
   }
 }
 </script>

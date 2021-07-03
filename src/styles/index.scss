@@ -1,16 +1,25 @@
 // 导入一些基础样式
-@import './variables.scss'; // 定义项目中用到的sccss的变量
-@import './mixin.scss'; // 定义项目中可以复用的样式
-@import './transition.scss'; // 定义css3的动画
-@import './element-ui.scss'; // 全局重置了一些element组件库的样式
-@import './sidebar.scss'; // 公共布局的侧边栏样式
+@import "./variables.scss"; // 定义项目中用到的sccss的变量
+@import "./mixin.scss"; // 定义项目中可以复用的样式
+@import "./transition.scss"; // 定义css3的动画
+@import "./element-ui.scss"; // 全局重置了一些element组件库的样式
+@import "./sidebar.scss"; // 公共布局的侧边栏样式
+// 导入自己的样式
+@import "./common.scss";
+
+// 进度条的样式
+#nprogress .bar {
+  background: rgb(145, 233, 2) !important;
+  height: 6px !important;
+}
 
 body {
   height: 100%;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
+    Microsoft YaHei, Arial, sans-serif;
 }
 
 label {
