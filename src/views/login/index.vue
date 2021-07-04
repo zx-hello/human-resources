@@ -115,6 +115,7 @@ export default {
       // loading加载动画
       loading: false,
       passwordType: 'password',
+      // 存储回调地址
       redirect: undefined
     }
   },
@@ -123,10 +124,12 @@ export default {
       handler: function (route) {
         this.redirect = route.query && route.query.redirect
       },
+      // 立即执行handler的回调
       immediate: true
     }
   },
   methods: {
+    // 控制密码是否可见
     showPwd () {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -155,8 +158,8 @@ export default {
             await this.$store.dispatch('user/loginAction', this.loginForm)
             // 关闭loading加载效果
             // this.loading = false
-            // 跳转到首页
-            this.$router.replace('/')
+            // 跳转到首页 或上次访问失败的页面
+            this.$router.replace(this.redirect || '/')
           } catch (error) {
             console.log(error)
             // 关闭loading加载效果=>用户可以继续操作

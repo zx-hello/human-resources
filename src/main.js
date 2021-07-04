@@ -22,6 +22,20 @@ import '@/icons' // icon
 // 添加路由拦截---> 页面访问控制
 import '@/permission' // permission control
 
+// 导入自定义指令
+// import * as 名字 from 'path' => 这样可以将所有导出放到一个对象上
+import * as directives from '@/directives'
+// console.log(directives, directives.imgError)
+// 注册多个全局指令
+/**
+ * item 指 里面的dom
+ * Vue.directive('指令名称', {
+ * inserted: function (dom,options) {
+ */
+Object.keys(directives).forEach(dname => {
+  Vue.directive(dname, directives[dname])
+})
+
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

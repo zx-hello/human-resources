@@ -4,6 +4,8 @@ import axios from 'axios'
 import { Message } from 'element-ui'
 // 导入vuex实例=>通过store拿到里面的token
 import store from '@/store'
+// 导入路由实例
+import router from '@/router'
 // import { getToken } from '@/utils/auth'
 
 // create an axios instance
@@ -61,6 +63,7 @@ service.interceptors.response.use(
      */
     // 请求成功
     const { success, data, message } = response.data
+    // http状态码200进入这里
     // 处理请求的成功或失败
     if (success) {
       // 成功就把页面需要的data返回回去
@@ -106,13 +109,28 @@ service.interceptors.response.use(
     // }
   },
   error => {
+    // http状态码 非200 进入这里
     // 请求失败执行到这里
-    console.log('err' + error) // for debug
+    console.dir(error) // for debug
+    /**
+     * 处理了token失效的情况
+     * 1.后台返回http状态码 401
+     * 2.是401 =>跳回登录
+     */
+    if (error.response && error.response.status === 401) {
+      // 处理某些页面多个请求多次401重复跳转的问题，造成重新登录后不能正确跳转到上次访问页面的问题
+      if (router.currentRoute.path === '/login') return
+      // 跳转前，清除本地存储的状态数据
+      store.dispatch('user/logoutAction')
+      // 跳转回登录页面
+      // fullPath若有参数，也会带上参数   path 只是路径，不会带上参数
+      router.replace(`/login?redirect=${router.currentRoute.fullPath}`)
+    }
     // 错误信息的提示
     Message({
-      message: error.message,
+      message: error.response.data.message,
       type: 'error',
-      duration: 5 * 1000
+      duration: 3 * 1000
     })
     return Promise.reject(error)
   }

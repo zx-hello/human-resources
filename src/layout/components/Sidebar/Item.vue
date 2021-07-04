@@ -12,7 +12,8 @@ export default {
       default: ''
     }
   },
-  render(h, context) {
+  // 模仿react=>render函数渲染template模板
+  render (h, context) {
     const { icon, title } = context.props
     const vnodes = []
 
@@ -20,7 +21,7 @@ export default {
       if (icon.includes('el-icon')) {
         vnodes.push(<i class={[icon, 'sub-el-icon']} />)
       } else {
-        vnodes.push(<svg-icon icon-class={icon}/>)
+        vnodes.push(<svg-icon icon-class={icon} />)
       }
     }
 

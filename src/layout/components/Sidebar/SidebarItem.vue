@@ -1,5 +1,6 @@
 <template>
   <div v-if="!item.hidden">
+    <!-- 一级菜单 -->
     <template
       v-if="
         hasOneShowingChild(item.children, item) &&
@@ -21,7 +22,8 @@
       </app-link>
     </template>
 
-    <el-submenu
+    <!-- 二级菜单 -->
+    <!-- <el-submenu
       v-else
       ref="subMenu"
       :index="resolvePath(item.path)"
@@ -42,7 +44,7 @@
         :base-path="resolvePath(child.path)"
         class="nest-menu"
       />
-    </el-submenu>
+    </el-submenu> -->
   </div>
 </template>
 

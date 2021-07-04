@@ -1,6 +1,7 @@
 <template>
   <section class="app-main">
     <transition name="fade-transform" mode="out-in">
+      <!-- 二级路由挂载点=> 动态路由参数变化，组件不刷新问题=>加key解决 -->
       <router-view :key="key" />
     </transition>
   </section>
@@ -10,7 +11,8 @@
 export default {
   name: 'AppMain',
   computed: {
-    key() {
+    key () {
+      // 路由的路径
       return this.$route.path
     }
   }
@@ -25,7 +27,7 @@ export default {
   position: relative;
   overflow: hidden;
 }
-.fixed-header+.app-main {
+.fixed-header + .app-main {
   padding-top: 50px;
 }
 </style>

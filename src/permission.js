@@ -63,6 +63,7 @@
 //   // finish progress bar
 //   NProgress.done()
 // })
+
 // // ====================我写的版本
 // 控制访问权限 有无token
 import router from '@/router' // 路由实例
@@ -89,8 +90,14 @@ router.beforeEach((to, from, next) => {
       // 为了避免重复登陆=>跳转到首页
       next('/')
     } else {
-      // 有token且访问的不是登录页
+      // 有token且访问的不是登录页 放行
       next()
+      // 获取登陆人的信息=>存储到vuex
+      if (!store.getters.name) {
+        // 如果没有获取过执行actions获取
+        // 后续控制权限的时候 需要加await
+        store.dispatch('user/UserInfoAction')
+      }
     }
   } else {
     // 不存在token

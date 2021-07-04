@@ -13,11 +13,27 @@ export function login (data) {
   })
 }
 
-// 获取当前登陆人信息 跨域请求
+/**
+ * 获取当前登陆人信息
+ * 根据token(是加密的，解密出来包含用户主要信息) 查询用户信息
+ * @returns
+ */
+//  跨域请求
 export function getUserInfo () {
   return request({
     url: '/sys/profile',
     method: 'post'
+  })
+}
+
+/**
+ * @description: 获取用户头像
+ * @param {*} id 用户id
+ * @return {*}
+ */
+export function getUserDetailById (id) {
+  return request({
+    url: `/sys/user/${id}`
   })
 }
 

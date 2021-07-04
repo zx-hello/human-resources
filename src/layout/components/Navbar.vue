@@ -20,8 +20,9 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img src="@/assets/common/bigUserHeader.png" class="user-avatar" />
-          <span class="name">管理员</span>
+          <!-- <img src="@/assets/common/bigUserHeader.png" class="user-avatar" /> -->
+          <img v-imgError="defaultTx" :src="avatar" class="user-avatar" />
+          <span class="name">{{ name }}</span>
           <i class="el-icon-caret-bottom" style="color: #fff" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -50,19 +51,39 @@ export default {
     // Breadcrumb,
     Hamburger
   },
+  data () {
+    return {
+      // 默认图片(图片加载失败显示默认图片)
+      defaultTx: require('@/assets/common/bigUserHeader.png')
+    }
+  },
   computed: {
     ...mapGetters([
       'sidebar',
-      'avatar'
+      // 登陆人的数据
+      'avatar',
+      'name'
     ])
   },
   methods: {
     toggleSideBar () {
       this.$store.dispatch('app/toggleSideBar')
     },
-    async logout () {
-      await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    logout () {
+      /**
+       * 1.避免误操作=> 让用户确认
+       * 2.确认后才执行
+       */
+      this.$confirm('确定要退出嘛？', '提示').then(async () => {
+        // 点击确定=> 进入到这里
+        await this.$store.dispatch('user/logoutAction')
+        // 跳回登录
+        // 退出登录的时候把上次访问的页面地址传递给登录页 redirect
+        this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      }).catch((e) => {
+        // 点击取消=>走到这里
+        console.log('取消', e)
+      })
     }
   }
 }

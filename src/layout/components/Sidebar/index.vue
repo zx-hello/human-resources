@@ -1,7 +1,9 @@
 <template>
-  <div :class="{'has-logo':showLogo}">
+  <div :class="{ 'has-logo': showLogo }">
+    <!-- 菜单上面logo组件 -->
     <logo v-if="showLogo" :collapse="isCollapse" />
     <el-scrollbar wrap-class="scrollbar-wrapper">
+      <!-- 菜单组件(element组件提供) -->
       <el-menu
         :default-active="activeMenu"
         :collapse="isCollapse"
@@ -12,7 +14,13 @@
         :collapse-transition="false"
         mode="vertical"
       >
-        <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path" />
+        <!-- 自定义组件 菜单项的组件 -->
+        <sidebar-item
+          v-for="route in routes"
+          :key="route.path"
+          :item="route"
+          :base-path="route.path"
+        />
       </el-menu>
     </el-scrollbar>
   </div>
@@ -30,10 +38,10 @@ export default {
     ...mapGetters([
       'sidebar'
     ]),
-    routes() {
+    routes () {
       return this.$router.options.routes
     },
-    activeMenu() {
+    activeMenu () {
       const route = this.$route
       const { meta, path } = route
       // if set path, the sidebar will highlight the path you set
@@ -42,13 +50,14 @@ export default {
       }
       return path
     },
-    showLogo() {
+    showLogo () {
       return this.$store.state.settings.sidebarLogo
     },
-    variables() {
+    variables () {
       return variables
     },
-    isCollapse() {
+    // 控制菜单折叠展开的vuex数据
+    isCollapse () {
       return !this.sidebar.opened
     }
   }
