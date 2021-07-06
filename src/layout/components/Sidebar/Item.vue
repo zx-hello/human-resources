@@ -21,6 +21,7 @@ export default {
       if (icon.includes('el-icon')) {
         vnodes.push(<i class={[icon, 'sub-el-icon']} />)
       } else {
+        // 使用svg-icon组件 渲染菜单图标
         vnodes.push(<svg-icon icon-class={icon} />)
       }
     }

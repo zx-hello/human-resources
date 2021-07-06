@@ -36,7 +36,13 @@ import socialRouter from './modules/social'
   }
  */
 
-// 动态路由==> 后期做后台系统页面访问控制=>路由规则的动态添加(根据当前登陆人的登录权限)
+// 动态路由==> 后期做后台系统页面访问控制=>路由规则的动态添加(根据当前登陆人的登录权限)=>权限控制
+/**
+ * 1.第一层：父路由=>使用layout作为component的值
+ * 2.第二层：真正配置的页面放到children里去配置
+ * 3.子路由内加上 元信息meta =>里面配置标题title和icon，这样就可以显示到侧边栏菜单了
+ * 说明：通过 hidden：true控制路由是否在菜单中显示(放置于父路由中)
+ */
 export const asyncRoutes = [
   departmentsRouter,
   settingRouter,
@@ -75,9 +81,9 @@ export const constantRoutes = [
     redirect: '/dashboard',
     children: [{
       path: 'dashboard',
-      name: 'Dashboard',
+      name: 'Dashboard', // 后续权限控制会使用
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '首页', icon: 'dashboard' }
     }]
   },
 
@@ -88,6 +94,7 @@ export const constantRoutes = [
 // 使用工厂模式=>批量生产路由实例
 const createRouter = () => new Router({
   // mode: 'history', // require service support
+  // 每次页面切换的时候，都会执行 => 将滚动的位置重置为0，从顶部开始
   scrollBehavior: () => ({ y: 0 }),
   // 将静态路由和动态路由组合到一起
   routes: [...constantRoutes, ...asyncRoutes]

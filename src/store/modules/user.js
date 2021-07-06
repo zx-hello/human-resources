@@ -59,7 +59,7 @@ export default {
       const userInfo = await getUserInfo()
       // 2.获取用户头像
       const avatar = await getUserDetailById(userInfo.userId)
-      console.log('登陆人信息', userInfo, avatar)
+      // console.log('登陆人信息', userInfo, avatar)
       // 合并两个对象
       ctx.commit('updateUserInfo', { ...userInfo, ...avatar })
     },

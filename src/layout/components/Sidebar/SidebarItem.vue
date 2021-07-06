@@ -13,7 +13,7 @@
           :index="resolvePath(onlyOneChild.path)"
           :class="{ 'submenu-title-noDropdown': !isNest }"
         >
-          <!-- title配置标题，icon配置图标 -->
+          <!-- meta元信息中的 title配置标题，icon配置图标 -->
           <item
             :icon="onlyOneChild.meta.icon || (item.meta && item.meta.icon)"
             :title="onlyOneChild.meta.title"

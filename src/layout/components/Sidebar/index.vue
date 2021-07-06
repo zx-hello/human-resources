@@ -14,7 +14,10 @@
         :collapse-transition="false"
         mode="vertical"
       >
-        <!-- 自定义组件 菜单项的组件 -->
+        <!-- 自定义组件 菜单项的组件 默认插槽
+             配置完的路由数据在这里v-for遍历渲染显示到菜单
+             作用：sidebar-item组件接口当前路由配置数据item
+         -->
         <sidebar-item
           v-for="route in routes"
           :key="route.path"
@@ -38,8 +41,10 @@ export default {
     ...mapGetters([
       'sidebar'
     ]),
+    // 计算路由的变化
     routes () {
       // this.$router.options.routes可以拿到完整的路由数据
+      // 所有的路由信息，包括子路由的信息、元信息等
       return this.$router.options.routes
     },
     activeMenu () {
