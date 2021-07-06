@@ -39,6 +39,7 @@ export default {
       'sidebar'
     ]),
     routes () {
+      // this.$router.options.routes可以拿到完整的路由数据
       return this.$router.options.routes
     },
     activeMenu () {

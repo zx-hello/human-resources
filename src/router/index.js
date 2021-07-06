@@ -38,13 +38,13 @@ import socialRouter from './modules/social'
 
 // 动态路由==> 后期做后台系统页面访问控制=>路由规则的动态添加(根据当前登陆人的登录权限)
 export const asyncRoutes = [
-  approvalsRouter,
   departmentsRouter,
+  settingRouter,
   employeesRouter,
   permissionRouter,
+  approvalsRouter,
   attendancesRouter,
   salarysRouter,
-  settingRouter,
   socialRouter
 ]
 
@@ -66,7 +66,7 @@ export const constantRoutes = [
   {
     path: '/404',
     component: () => import('@/views/404'),
-    hidden: true
+    hidden: true // 隐藏404页面，不让其显示在菜单栏
   },
   // 首页
   {
