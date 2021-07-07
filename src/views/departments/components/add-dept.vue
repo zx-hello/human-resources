@@ -106,6 +106,7 @@ export default {
         // 新增
         flag = this.allTreeData.some(item => value === item.code)
       }
+
       if (flag) {
         // 和之前存在的部门编码重复
         callback(new Error('新增部门编码重复,请重新输入!'))
