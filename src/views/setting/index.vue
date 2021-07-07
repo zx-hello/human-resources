@@ -70,10 +70,10 @@
     </div>
     <!-- 新增角色弹出层 -->
     <el-dialog
-      title="编辑弹层"
+      :title="roleForm.id ? '编辑弹层' : '新增弹层'"
       :visible="showDialog"
       width="50%"
-      @close="showDialog = false"
+      @close="close"
     >
       <!-- 表单 -->
       <el-form
@@ -92,7 +92,7 @@
       <!-- 底部 操作按钮 -->
       <el-row slot="footer" type="flex" justify="center">
         <el-col :span="6">
-          <el-button size="small" @click="showDialog = false">取消</el-button>
+          <el-button size="small" @click="close">取消</el-button>
           <el-button size="small" type="primary" @click="submitRole">
             确定
           </el-button>
@@ -170,6 +170,17 @@ export default {
     addRole () {
       this.showDialog = true
     },
+    // 关闭弹层
+    close () {
+      this.showDialog = false
+      // 清空输入框的内容
+      this.roleForm = {
+        name: '',
+        description: ''
+      }
+      // 清空校验
+      this.$refs.roleForm.resetFields()
+    },
     // 编辑角色 打开弹层
     async editRole (id) {
       this.showDialog = true
@@ -193,18 +204,11 @@ export default {
             await addRole(this.roleForm)
             this.$message.success('新增角色成功！')
           }
+          // 刷新列表
+          this.getRole()
           // 关闭弹层
           this.showDialog = false
           this.pages.page = 1
-          // 刷新列表
-          this.getRole()
-          // 清空输入框的内容
-          this.roleForm = {
-            name: '',
-            description: ''
-          }
-          // 清空校验
-          this.$refs.roleForm.resetFields()
         }
       })
     }
