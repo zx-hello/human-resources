@@ -20,7 +20,7 @@
                     <span> 操作<i class="el-icon-arrow-down" /> </span>
                     <el-dropdown-menu slot="dropdown">
                       <!-- @click.native="addDept('') => 表示直接添加的为父部门=> 一级部门 -->
-                      <el-dropdown-item @click.native="addDept(null)">
+                      <el-dropdown-item @click.native="addDept()">
                         添加子部门
                       </el-dropdown-item>
                     </el-dropdown-menu>
@@ -67,7 +67,9 @@
                           <el-dropdown-item @click.native="addDept(data)">
                             添加子部门
                           </el-dropdown-item>
-                          <el-dropdown-item>编辑部门</el-dropdown-item>
+                          <el-dropdown-item @click.native="editDept(data)">
+                            编辑部门
+                          </el-dropdown-item>
                           <el-dropdown-item @click.native="delDepet(data)">
                             删除部门
                           </el-dropdown-item>
@@ -84,8 +86,12 @@
     </div>
     <!-- 新增部门弹窗 -->
     <AddDept
+      ref="edit"
       :show-dialog="showDialog"
+      :current-node="currentNode"
+      :all-tree-data="allTreeData"
       @close_dialog="showDialog = false"
+      @update-tree="getAll"
     ></AddDept>
   </div>
 </template>
@@ -138,21 +144,25 @@ export default {
       // 新增部门的弹窗
       showDialog: false,
       // 当前点击的部门数据
-      currentNode: null
+      currentNode: null,
+      // 所有部门数据
+      allTreeData: []
     }
   },
-  mounted () {
+  created () {
     this.getAll()
   },
   methods: {
     // 获取当前点击的节点
     handleNodeClick (value) {
-      console.log(value)
+      // console.log(value)
     },
     // 获取所有部门数据
     async getAll () {
       // const res = await getDepartments()
       const { companyName, depts } = await getDepartments()
+      // 存储未经处理的数据
+      this.allTreeData = depts
       // 在控制台以表格形式展现数据
       // console.log(res)
       // console.table(depts)
@@ -160,11 +170,12 @@ export default {
       this.companyInfo.name = companyName
       // 渲染树结构数据
       // this.treeData = depts
-      this.treeData = formatTreeData(depts)
+      // JSON.parse(JSON.stringify(depts))===> 深拷贝
+      this.treeData = formatTreeData(JSON.parse(JSON.stringify(depts)))
     },
     // 删除部门
     async delDepet (node) {
-      console.log('当前操作的部门', node)
+      // console.log('当前操作的部门', node)
       /**
        * 1.判断是否为父级部门(有子部门)=> 若是不能删除
        * 2.子部门可以删除
@@ -195,6 +206,16 @@ export default {
       this.currentNode = node
       // 打开弹层
       this.showDialog = true
+    },
+    // 编辑部门
+    editDept (node) {
+      this.currentNode = node
+      this.showDialog = true
+      // 回填点击的当前部门数据 => 调用接口,获取最新部门数据
+      // 打开的时候就获取到当前编辑的部门数据ID => 调用接口
+      // 父组件调用子组件方法 使用技术==> 使用ref
+      // getDept 子组件(department/component/add-dept.vue)的方法
+      this.$refs.edit.getDept(node.id)
     }
   }
 }
