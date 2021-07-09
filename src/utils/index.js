@@ -3,9 +3,9 @@
  */
 
 /**
- * Parse the time to string
- * @param {(Object|string|number)} time
- * @param {string} cFormat
+ * Parse the time to string 格式化时间
+ * @param {(Object|string|number)} time date对象
+ * @param {string} cFormat 格式化的格式 {y}-{m}-{d} {h}:{i}:{s}
  * @returns {string | null}
  */
 export function parseTime (time, cFormat) {
