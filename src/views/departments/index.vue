@@ -40,6 +40,7 @@
             :data="treeData"
             :props="defaultProps"
             default-expand-all
+            icon-class="el-icon-arrow-right"
             @node-click="handleNodeClick"
           >
             <!-- 作用域插槽 data拿到的是每一个子节点的对象 -->

@@ -10,8 +10,16 @@
             </template>
             <!-- 插入到right插槽位置 -->
             <template #right>
-              <el-button type="warning" size="small">导入excel</el-button>
-              <el-button type="danger" size="small">导出excel</el-button>
+              <el-button
+                type="warning"
+                size="small"
+                @click="$router.push('/import')"
+              >
+                导入excel
+              </el-button>
+              <el-button type="danger" size="small" @click="exportEmployees">
+                导出excel
+              </el-button>
               <el-button type="primary" size="small" @click="showDialog = true">
                 新增员工
               </el-button>
@@ -204,6 +212,69 @@ export default {
         // 更新渲染的数据
         this.getList()
       }).catch(console.log)
+    },
+    // 导出员工列表的数据
+    async exportEmployees () {
+      //  按需加载js模块使用===>懒加载==>依赖script-loader包
+      const excel = await import('@/utils/Export2Excel')
+      // console.log(excel)
+      // console.log(this.transformList(this.list))
+      // 指定导出得字段(映射关系)
+      const maps = {
+        '手机号': 'mobile',
+        '姓名': 'username',
+        '入职日期': 'timeOfEntry',
+        '聘用形式': 'formOfEmployment',
+        '工号': 'workNumber',
+        '转正日期': 'correctionTime',
+        '部门': 'departmentName'
+      }
+      // 取出对象内所有得键，导出得头数据
+      const header = Object.keys(maps)
+      // 过滤头
+      const filterHeader = Object.values(maps)
+      // 转换二维数组
+      const data = this.transformList(this.list, filterHeader)
+      excel.export_json_to_excel({
+        // 数据部分
+        header: header, // 指定导出的表头
+        data: data,
+        // 指定导出的文件名
+        filename: 'testExport',
+        // 单元格每列自适应宽度
+        autoWidth: true,
+        // 导出的文件格式
+        bookType: 'xlsx'
+      })
+    },
+    transformList (list, filterHeader) {
+      /**
+       * 核心：将list列表数据转换成二维数组
+       * 1.准备一个空数组==>存储转换结果
+       * 2.第一层循环==> 当前页的员工列表数据--->forEach ==> [{}, {}]
+       * 3.第二层循环==> 循环当前员工对象数据--->for in ==> {}
+       *    1.创建一个空数组==>只存储value值(员工信息)
+       *    2.将存完值得空数组push到外层定义得数组中
+       * 4.返回处理完得结果
+       */
+      const secondArr = []
+      list.forEach(item => {
+        // item ===> {}
+        const newArr = []
+        for (const key in item) {
+          // 根据指定得头去进行导出，过滤数据==>只留下maps里指定导出的数据项
+          if (filterHeader.includes(key)) {
+            // 判断formOfEmployment(聘用形式) 需要格式换后去push
+            if (key === 'formOfEmployment') {
+              newArr.push(this.formatEmployment(item[key]))
+            } else {
+              newArr.push(item[key])
+            }
+          }
+        }
+        secondArr.push(newArr)
+      })
+      return secondArr
     }
   }
 }

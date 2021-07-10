@@ -53,27 +53,17 @@
           @focus="showTree = true"
         />
         <!-- 选择部门的数据 -->
-        <el-row
-          v-show="showTree"
-          style="
-            position: relative;
-            width: 50%;
-            margin-top: 10px;
-            border: 1px solid #eee;
-          "
-        >
-          <!-- 关闭按钮图标 -->
-          <i
-            style="position: absolute; top: 0; right: 0; z-index: 100"
-            class="el-icon-delete"
-            @click="showTree = false"
-          ></i>
-          <el-tree
-            :data="treeData"
-            :props="{ label: 'name' }"
-            @node-click="selectNode"
-          ></el-tree>
-        </el-row>
+        <!-- 方法一 -->
+        <!-- <ElDepSelect
+          :visible="showTree"
+          @close-dept="showTree = false"
+          @current-select="getDept"
+        ></ElDepSelect> -->
+        <!-- 方法二 -->
+        <ElDepSelect
+          :visible.sync="showTree"
+          @current-select="getDept"
+        ></ElDepSelect>
       </el-form-item>
       <el-form-item label="转正时间" prop="correctionTime">
         <el-date-picker
@@ -95,10 +85,9 @@
 // 引入聘用形式的数据字典
 import dataTypes from '@/api/constant/employees'
 // 引入API
-import { getDepartments } from '@/api/department'
 import { addEmployee } from '@/api/employees'
-// 引入树形结构转换方法、格式化时间
-import { formatTreeData, parseTime } from '@/utils'
+// 引入格式化时间
+import { parseTime } from '@/utils'
 export default {
   props: {
     showDialog: {
@@ -110,8 +99,6 @@ export default {
     return {
       // 聘用形式数据
       dataTypes,
-      // 树形结构的数组
-      treeData: [],
       // 控制部门选择的显示与隐藏
       showTree: false,
       // 定义表单数据
@@ -150,16 +137,7 @@ export default {
       }
     }
   },
-  created () {
-    this.getTreeData()
-  },
   methods: {
-    // 获取部门的数据
-    async getTreeData () {
-      const { depts } = await getDepartments()
-      // 使用算法将部门数据进行树形处理
-      this.treeData = formatTreeData(depts)
-    },
     // 关闭弹层
     close () {
       this.$emit('close-dialog')
@@ -188,10 +166,9 @@ export default {
         }
       })
     },
-    // 选择部门
-    selectNode (Node) {
-      this.formData.departmentName = Node.name
-      this.showTree = false
+    // 选择部门数据 子传父传递过来的数据
+    getDept (node) {
+      this.formData.departmentName = node.name
     }
   }
 }

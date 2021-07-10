@@ -162,3 +162,25 @@ export function formatTreeData (list) {
   // console.log(treeData)
   return treeData
 }
+
+// excel时间格式化
+/**
+ *
+ * @param {*} numb excel时间格式
+ * @param {*} format 转换分隔符
+ * @returns 标准时间格式
+ */
+export function formatExcelDate (numb, format) {
+  // 天数
+  const time = new Date((numb - 1) * 24 * 3600000 + 1)
+  // console.log(time)
+  time.setYear(time.getFullYear() - 70)
+  const year = time.getFullYear() + ''
+  const month = time.getMonth() + 1 + ''
+  const date = time.getDate() + ''
+  // 转换的格式符号
+  if (format && format.length === 1) {
+    return year + format + month + format + date
+  }
+  return year + (month < 10 ? '0' + month : month) + (date < 10 ? '0' + date : date)
+}
