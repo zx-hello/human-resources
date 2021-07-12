@@ -3,6 +3,7 @@
 import PageTools from './PageTools'
 import UploadExcel from './UploadExcel'
 import ElDepSelect from './DepSel'
+import UploadImg from './UploadImg'
 
 // // vue插件写法：声明对象--->内部有nstall方法
 // export default {
@@ -20,7 +21,7 @@ import ElDepSelect from './DepSel'
  * 2.循环数组注册所有组件
  */
 
-const components = [PageTools, UploadExcel, ElDepSelect]
+const components = [PageTools, UploadExcel, ElDepSelect, UploadImg]
 
 export default {
   install (Vue) {

@@ -37,17 +37,15 @@ export function getUserDetailById (id) {
   })
 }
 
-export function getInfo (token) {
+/**
+ * @description: 保存员工信息
+ * @param {*} data
+ * @return {*}
+ */
+export function saveUserDetailById (data) {
   return request({
-    url: '/vue-admin-template/user/info',
-    method: 'get',
-    params: { token }
-  })
-}
-
-export function logout () {
-  return request({
-    url: '/vue-admin-template/user/logout',
-    method: 'post'
+    url: `/sys/user/${data.id}`,
+    method: 'put',
+    data
   })
 }

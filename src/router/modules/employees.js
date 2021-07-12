@@ -15,6 +15,15 @@ export default {
         title: '员工管理', // 菜单标题
         icon: 'people'
       }
+    },
+    // 员工详情页的路由
+    {
+      path: 'detail/:id',
+      component: () => import('@/views/employees/detail'),
+      hidden: true, // 不在左侧菜单显示
+      meta: {
+        title: '员工详情'
+      }
     }
   ]
 }

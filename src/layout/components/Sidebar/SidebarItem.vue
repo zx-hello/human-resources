@@ -1,6 +1,6 @@
 <template>
   <div v-if="!item.hidden">
-    <!-- 一级菜单 -->
+    <!-- 一级菜单 默认是路由内部 children 是第一个 -->
     <template
       v-if="
         hasOneShowingChild(item.children, item) &&

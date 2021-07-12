@@ -39,6 +39,17 @@
           >
             <el-table-column type="index" label="序号" />
             <el-table-column prop="username" label="姓名" />
+            <el-table-column prop="staffPhoto" label="头像">
+              <template #default="{ row }">
+                <img
+                  slot="reference"
+                  :src="row.staffPhoto"
+                  class="staff"
+                  fit="fill"
+                  @click="showCode(row.staffPhoto)"
+                />
+              </template>
+            </el-table-column>
             <el-table-column prop="workNumber" label="工号" />
             <el-table-column prop="formOfEmployment" label="聘用形式">
               <template #default="{ row }">
@@ -57,7 +68,9 @@
             </el-table-column>
             <el-table-column label="操作" fixed="right" width="280">
               <template #default="{ row }">
-                <el-button type="text" size="small">查看</el-button>
+                <el-button type="text" size="small" @click="goToDetail(row.id)">
+                  查看
+                </el-button>
                 <el-button type="text" size="small">分配角色</el-button>
                 <el-button
                   type="text"
@@ -99,6 +112,18 @@
       :show-dialog="showDialog"
       @close-dialog="showDialog = false"
     ></AddEmployee>
+
+    <!-- 二维码弹层 -->
+    <el-dialog
+      width="300px"
+      title="二维码"
+      :visible="codeDialog"
+      @close="codeDialog = false"
+    >
+      <el-row type="flex" justify="center">
+        <canvas ref="myCanvas" />
+      </el-row>
+    </el-dialog>
   </div>
 </template>
 
@@ -118,6 +143,8 @@ import dataTypes from '@/api/constant/employees'
 import dayjs from 'dayjs'
 // 引入弹出层插件
 import AddEmployee from './components/add-employee.vue'
+// 导入二维码插件
+import QrCode from 'qrcode'
 export default {
   name: 'Employees',
   components: {
@@ -138,7 +165,9 @@ export default {
       // 账户状态
       active: true,
       // 弹出层的显示或隐藏
-      showDialog: false
+      showDialog: false,
+      // 控制二维码弹层的显示与隐藏
+      codeDialog: false
     }
   },
   created () {
@@ -275,10 +304,29 @@ export default {
         secondArr.push(newArr)
       })
       return secondArr
+    },
+    // 跳转到查看员工信息详情页
+    goToDetail (id) {
+      this.$router.push({ path: `/employees/detail/${id}` })
+    },
+    showCode (url) {
+      // 如果没有图片，则不展示弹层
+      if (!url) return
+      this.codeDialog = true
+      this.$nextTick(() => {
+        QrCode.toCanvas(this.$refs.myCanvas, url)
+      })
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.employees-container {
+  .staff {
+    width: 68px;
+    height: 68px;
+    border-radius: 100%;
+  }
+}
 </style>
