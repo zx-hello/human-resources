@@ -9,6 +9,21 @@
           <el-tab-pane name="detail" label="个人详情">
             <UserInfo :user-data="userData"></UserInfo>
           </el-tab-pane>
+          <el-tab-pane name="mobile" label="登录手机号">
+            <el-row>
+              <el-input v-model="userData.mobile" disabled />
+            </el-row>
+            <el-row style="margin-top: 20px">
+              <el-col :span="12">
+                <el-button
+                  style="background: #409eff; color: #fff; border: none"
+                  @click="$router.back()"
+                >
+                  返回
+                </el-button>
+              </el-col>
+            </el-row>
+          </el-tab-pane>
         </el-tabs>
       </el-card>
     </div>
@@ -31,7 +46,7 @@ export default {
       // 用户信息
       userData: {},
       // 默认选中的页签
-      active: 'detail'
+      active: 'mobile'
     }
   },
   created () {
