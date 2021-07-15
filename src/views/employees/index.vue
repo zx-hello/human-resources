@@ -71,7 +71,9 @@
                 <el-button type="text" size="small" @click="goToDetail(row.id)">
                   查看
                 </el-button>
-                <el-button type="text" size="small">分配角色</el-button>
+                <el-button type="text" size="small" @click="assignRole(row.id)">
+                  分配角色
+                </el-button>
                 <el-button
                   type="text"
                   size="small"
@@ -124,6 +126,12 @@
         <canvas ref="myCanvas" />
       </el-row>
     </el-dialog>
+
+    <!-- 分配角色弹层 -->
+    <AssignRole
+      ref="arole"
+      :show-role-dialog.sync="showRoleDialog"
+    ></AssignRole>
   </div>
 </template>
 
@@ -143,12 +151,14 @@ import dataTypes from '@/api/constant/employees'
 import dayjs from 'dayjs'
 // 引入弹出层插件
 import AddEmployee from './components/add-employee.vue'
+import AssignRole from './components/assign-role.vue'
 // 导入二维码插件
 import QrCode from 'qrcode'
 export default {
   name: 'Employees',
   components: {
-    AddEmployee
+    AddEmployee,
+    AssignRole
   },
   data () {
     return {
@@ -167,7 +177,9 @@ export default {
       // 弹出层的显示或隐藏
       showDialog: false,
       // 控制二维码弹层的显示与隐藏
-      codeDialog: false
+      codeDialog: false,
+      // 控制角色弹层的显示于隐藏
+      showRoleDialog: false
     }
   },
   created () {
@@ -309,6 +321,7 @@ export default {
     goToDetail (id) {
       this.$router.push({ path: `/employees/detail/${id}` })
     },
+    // 二维码弹层是否展示
     showCode (url) {
       // 如果没有图片，则不展示弹层
       if (!url) return
@@ -316,6 +329,12 @@ export default {
       this.$nextTick(() => {
         QrCode.toCanvas(this.$refs.myCanvas, url)
       })
+    },
+    // 打开分配角色弹层
+    assignRole (id) {
+      this.showRoleDialog = true
+      // 调用子组件方法 获取当前用户角色数据回填
+      this.$refs.arole.getUserRoles(id)
     }
   }
 }

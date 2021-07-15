@@ -26,7 +26,13 @@
               <el-table-column label="操作">
                 <!-- 使用默认插槽 自定义显示操作按钮 -->
                 <template #default="{ row }">
-                  <el-button size="small" type="success">分配权限</el-button>
+                  <el-button
+                    size="small"
+                    type="success"
+                    @click="assignPoints(row.id)"
+                  >
+                    分配权限
+                  </el-button>
                   <el-button
                     size="small"
                     type="primary"
@@ -99,12 +105,23 @@
         </el-col>
       </el-row>
     </el-dialog>
+
+    <!-- 控制分配角色的弹层 -->
+    <AssignPoints
+      ref="ap"
+      :show-points-dialog.sync="showPointsDialog"
+    ></AssignPoints>
   </div>
 </template>
 
 <script>
 import { getRoleList, deleteRole, addRole, getRoleDetail, updateRole } from '@/api/setting'
+// 导入子组件
+import AssignPoints from './components/assign-points.vue'
 export default {
+  components: {
+    AssignPoints
+  },
   data () {
     return {
       // 角色列表
@@ -129,7 +146,9 @@ export default {
           { required: true, message: '角色名不允许为空！', trigger: 'blur' },
           { min: 2, max: 10, message: '角色名长度为2~10位', trigger: 'blur' }
         ]
-      }
+      },
+      // 分配角色的弹层
+      showPointsDialog: false
     }
   },
   mounted () {
@@ -211,6 +230,11 @@ export default {
           this.pages.page = 1
         }
       })
+    },
+    // 打开给角色分配权限的弹层
+    assignPoints (roleId) {
+      this.showPointsDialog = true
+      this.$refs.ap.getRoleSelectedPoints(roleId)
     }
   }
 }

@@ -37,7 +37,7 @@ export function addRole (data) {
 }
 
 /**
- * @description: 获取角色详情
+ * @description: 1.获取角色详情 2.获取角色选择过的权限点
  * @param {*} id 角色id
  * @return {*}
  */
@@ -57,5 +57,18 @@ export function updateRole (data) {
     url: `/sys/role/${data.id}`,
     data,
     method: 'put'
+  })
+}
+
+/**
+ *
+ * @param {*} data 给角色分配权限 {id:角色id, permIds:[] 所有选中的节点的id组成的数组}
+ * @returns
+ */
+export function assignPerm (data) {
+  return request({
+    url: '/sys/role/assignPrem',
+    method: 'put',
+    data
   })
 }
