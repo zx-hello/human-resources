@@ -20,12 +20,7 @@
               <el-button type="danger" size="small" @click="exportEmployees">
                 导出excel
               </el-button>
-              <el-button
-                v-if="checkPoints('POINT-USER-ADD')"
-                type="primary"
-                size="small"
-                @click="showDialog = true"
-              >
+              <el-button type="primary" size="small" @click="showDialog = true">
                 新增员工
               </el-button>
             </template>
@@ -80,7 +75,6 @@
                   分配角色
                 </el-button>
                 <el-button
-                  v-if="checkPoints('point-user-delete')"
                   type="text"
                   size="small"
                   @click="delEmployee(row.id)"
