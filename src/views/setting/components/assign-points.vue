@@ -65,7 +65,8 @@ export default {
       /**
        * 1. 准备{id: 角色id, permIds: [] 所有选中的节点的ID组成的数组} 接口参数
        * 2. 调用接口分配权限
-       * 3.
+       * 3. 提示+关闭弹窗
+       * getCheckedKeys获取的是选中节点的id的数组 | getCheckedNodes 获取的是选中节点对象的数组
        */
       await assignPerm({ id: this.roleId, permIds: this.$refs.treePoints.getCheckedKeys() })
       this.$message.success('分配角色权限成功！')

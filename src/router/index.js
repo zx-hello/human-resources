@@ -96,10 +96,11 @@ export const constantRoutes = [
       name: 'import',
       component: () => import('@/views/import/index')
     }]
-  },
+  }
 
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  // 放在permission.js页面 filterAsyncRoutes的后面，这样就不会出现，刷新动态路由出现404页面
+  // { path: '*', redirect: '/404', hidden: true }
 ]
 
 // 使用工厂模式=>批量生产路由实例
@@ -108,7 +109,9 @@ const createRouter = () => new Router({
   // 每次页面切换的时候，都会执行 => 将滚动的位置重置为0，从顶部开始
   scrollBehavior: () => ({ y: 0 }),
   // 将静态路由和动态路由组合到一起
-  routes: [...constantRoutes, ...asyncRoutes]
+  // routes: [...constantRoutes, ...asyncRoutes]
+  // 只留下静态路由 ==>根据权限点数据动态添加路由
+  routes: [...constantRoutes]
 })
 
 const router = createRouter()

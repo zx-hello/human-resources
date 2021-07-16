@@ -55,14 +55,14 @@ export default {
   methods: {
     // 关闭弹窗
     close () {
-      this.$emit('update:showRoleDialog', false)
+      this.$emit('update:show-role-dialog', false)
       // 清空上次的选择数据
       this.selectedRoles = []
     },
     // 获取角色列表
     async getRoleList () {
       // 由于此处没有单独获取角色列表的接口，所以将所有页面的所有的角色数据都直接拿到
-      const { rows } = await getRoleList({ page: 1, pageSize: 1000 })
+      const { rows } = await getRoleList({ page: 1, pagesize: 1000 })
       this.roleRist = rows
     },
     // 确定分配角色按钮

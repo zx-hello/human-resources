@@ -5,11 +5,15 @@
       <div>
         <div class="fl headL">
           <div class="headImg">
-            <img src="@/assets/common/head.jpg" />
+            <img :src="avatar" />
           </div>
           <div class="headInfoTip">
             <p class="firstChild">早安，{{ name }}，祝你开心每一天！</p>
-            <p class="lastChild">早安，{{ name }}，祝你开心每一天！</p>
+            <p class="lastChild">
+              部门：{{ deptName }} | 工号：{{ workNumber }} | 手机号：{{
+                mobile
+              }}
+            </p>
           </div>
         </div>
         <div class="fr" />
@@ -25,6 +29,7 @@
             <span>工作日历</span>
           </div>
           <!-- 放置日历组件 -->
+          <WorkCal></WorkCal>
         </el-card>
         <!-- 公告 -->
         <el-card class="box-card">
@@ -70,6 +75,7 @@
             <span>绩效指数</span>
           </div>
           <!-- 放置雷达图 -->
+          <Radar></Radar>
         </el-card>
         <!-- 帮助连接 -->
         <el-card class="box-card">
@@ -107,11 +113,22 @@
 <script>
 import { mapGetters } from 'vuex'
 // import { getUserInfo } from '@/api/user'
+// 导入工作日历组件
+import WorkCal from './components/work-calendar'
+import Radar from './components/radar'
 export default {
   name: 'Dashboard',
+  components: {
+    WorkCal,
+    Radar
+  },
   computed: {
     ...mapGetters([
-      'name'
+      'name',
+      'avatar',
+      'deptName',
+      'mobile',
+      'workNumber'
     ])
   }
   // // 测试跨域是否成功

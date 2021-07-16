@@ -79,7 +79,8 @@ export default {
         await this.$store.dispatch('user/logoutAction')
         // 跳回登录
         // 退出登录的时候把上次访问的页面地址传递给登录页 redirect
-        this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+        // this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+        this.$router.push(`/login`)
       }).catch((e) => {
         // 点击取消=>走到这里
         console.log('取消', e)

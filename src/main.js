@@ -25,6 +25,12 @@ import '@/permission' // permission control
 // 注册插件 导入全局所有公共组件
 import GlobleComponents from './components'
 
+// 导入权限功能点mixin方法
+import ckp from '@/utils/mixin'
+
+// 导入echarts插件
+import echartsPlugin from './utils/echarts'
+
 // 导入自定义指令
 // import * as 名字 from 'path' => 这样可以将所有导出放到一个对象上
 import * as directives from '@/directives'
@@ -62,6 +68,12 @@ Vue.use(ElementUI)
 // 1.接收插件对象(install方法)
 // 2.调用install方法 传入Vue构造函数
 Vue.use(GlobleComponents)
+
+// 混入方法到全部页面下
+Vue.use(ckp)
+
+// 注册echarts插件
+Vue.use(echartsPlugin)
 
 Vue.config.productionTip = false
 

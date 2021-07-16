@@ -5,6 +5,8 @@ import getters from './getters'
 import app from './modules/app' // 处理菜单折叠展开状态数据持久化(vuex+cookie)
 import settings from './modules/settings' // 头部固定和logo数据状态的管理
 import user from './modules/user' // 用户登录相关数据在这里管理(开发需要使用)
+// 导入菜单的模块
+import menu from './modules/menu'
 
 // 注册vuex
 Vue.use(Vuex)
@@ -15,7 +17,8 @@ const store = new Vuex.Store({
   modules: {
     app,
     settings,
-    user
+    user,
+    menu
   },
   // 快捷方式=>方便获取子模块的state数据
   getters

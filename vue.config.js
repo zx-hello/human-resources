@@ -45,6 +45,7 @@ module.exports = {
       '/api': {
         target: 'http://ihrm-java.itheima.net', // 我们要代理的真实接口地址
         // target: 'http://www.itcbc.com:3000', // 效果不错的接口
+        // target: 'http://192.168.141.82:3000', // 教室本地存储
         changeOrigin: true // 是否跨域 需要设置此值为true 才可以让本地服务代理我们发出请求
         // 路径重写
         // 如果我们不光要使得域名修改,而且还需要改变其它路径,则需要做路径重写

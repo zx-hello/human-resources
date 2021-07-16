@@ -5,6 +5,9 @@
 import { getToken, setToken, removeToken } from '@/utils/auth'
 // 导入login请求
 import { login, getUserInfo, getUserDetailById } from '@/api/user'
+// 导入重置路由的方法
+import { resetRouter } from '@/router'
+
 export default {
   // 开启命名模块化
   namespaced: true,
@@ -62,15 +65,26 @@ export default {
       // console.log('登陆人信息', userInfo, avatar)
       // 合并两个对象
       ctx.commit('updateUserInfo', { ...userInfo, ...avatar })
+      // 返回权限点数据
+      return userInfo.roles
     },
     // 退出登录=>清除本地状态数据
     logoutAction ({ commit }) {
       /**
        * 1.若有退出接口=> 调用
        * 2.清除本地登录存储的数据 =>token、userInfo
+       * 补充：
+       * 3.重置路由===> resetRouter(router/index.js)
+       * 4.重置菜单的vuex数据
        */
       commit('delToken')
       commit('delUserInfo')
+      // 清空路由缓存
+      resetRouter()
+      // user.js和menu.js是兄弟文件关系，commit不允许直接调用方法
+      // { root: true } 开启父模块权限，这样就可以直接调用兄弟模块的mutations的方法
+      // 清空菜单数据
+      commit('menu/setMenuList', [], { root: true })
     }
   }
 }

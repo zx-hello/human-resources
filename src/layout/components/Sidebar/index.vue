@@ -45,7 +45,10 @@ export default {
     routes () {
       // this.$router.options.routes可以拿到完整的路由数据
       // 所有的路由信息，包括子路由的信息、元信息等
-      return this.$router.options.routes
+      // this.$router.options.routes 只可以拿到静态的路由，拿不到动态添加的路由(addRoutes)
+      // return this.$router.options.routes
+      // 拿到的是一个完整的包含了静态路由+动态路由的数据结构
+      return this.$store.state.menu.menuList
     },
     activeMenu () {
       const route = this.$route

@@ -9,7 +9,7 @@ export default {
   children: [
     {
       path: '',
-      name: 'employees',
+      name: 'employees', // 后续权限控制会使用==>注意：name值和后台权限标识的值相等
       component: () => import('@/views/employees'),
       meta: {
         title: '员工管理', // 菜单标题
