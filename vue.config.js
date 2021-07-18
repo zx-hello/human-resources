@@ -8,6 +8,34 @@ function resolve (dir) {
 
 const name = defaultSettings.title || 'vue Admin Template' // page title
 
+/**
+ * 需求：生产环境排除大文件 vue element xlsx 三个包===>开发环境不排除
+ */
+let externals = {} // 排除的包对象，默认为空
+let cdn = { css: [], js: [] } // 排除后需要引入的CDN地址
+const isProduction = process.env.NODE_ENV === 'production' // 判断是否是生产环境
+if (isProduction) {
+  externals = {
+    'vue': 'Vue',
+    'element-ui': 'ELEMENT',
+    'xlsx': 'XLSX'
+  }
+  cdn = {
+    css: [
+      // element-ui css 样式表 在main.js文件内也需要根据环境去判断，是否加载css样式
+      'https://cdn.jsdelivr.net/npm/element-ui@2.13.2/lib/theme-chalk/index.css'
+    ],
+    js: [
+      // vue must at first!
+      'https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js',
+      // element-ui js
+      'https://cdn.jsdelivr.net/npm/element-ui@2.13.2/lib/index.js',
+      // xlsx
+      'https://cdn.jsdelivr.net/npm/xlsx@0.16.6/dist/xlsx.full.min.js'
+    ]
+  }
+}
+
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
 // For example, Mac: sudo npm run
@@ -57,10 +85,21 @@ module.exports = {
       }
     }
   },
+  // 在configureWebpack下添加 externals让webpack不打包vue,xlsx和element
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.
+    // 配置单页应用程序的页面的标题
     name: name,
+    // // 排除大文件的包
+    // externals: {
+    //   // externals 对象属性解析：
+    //   //  '包名' : '内置对象'  ===>当前包JS代码里的全局模块对象==>默认挂到window.模块内置对象
+    //   'vue': 'Vue',
+    //   'element-ui': 'ELEMENT',
+    //   'xlsx': 'XLSX'
+    // },
+    externals,
     resolve: {
       alias: {
         '@': resolve('src')
@@ -78,6 +117,12 @@ module.exports = {
         include: 'initial'
       }
     ])
+
+    // 注入CDN地址到html页面(打包时会执行)
+    config.plugin('html').tap(args => {
+      args[0].cdn = cdn // 配置cdn给插件
+      return args
+    })
 
     // when there are many pages, it will cause too many meaningless requests
     config.plugins.delete('prefetch')

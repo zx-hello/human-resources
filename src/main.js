@@ -5,7 +5,15 @@ import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
 // 导入element组件库
 import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
+// import 'element-ui/lib/theme-chalk/index.css'
+// 因为生产环境使用CDN方式引入Element样式，所以样式引入要在main入口排除
+if (process.env.NODE_ENV === 'development') {
+  // 只有开发环境引入element样式
+  // 因为生产环境以CDN方式引入css
+  // 使用require，因为import不可以写到语句块内
+  require('element-ui/lib/theme-chalk/index.css')
+}
+
 // 多语言配置
 // import locale from 'element-ui/lib/locale/lang/en' // lang i18n
 

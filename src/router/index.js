@@ -105,7 +105,13 @@ export const constantRoutes = [
 
 // 使用工厂模式=>批量生产路由实例
 const createRouter = () => new Router({
-  // mode: 'history', // require service support
+  /**
+   * 配置好之后
+   * 我们访问路径不再需要加#号同样运行正常
+   * 这是因为 webpack 默认配好了对于 history 模式的处理
+   * 实际上线其实是有问题的，需要我们增加额外的配置
+   */
+  mode: 'history', // require service support
   // 每次页面切换的时候，都会执行 => 将滚动的位置重置为0，从顶部开始
   scrollBehavior: () => ({ y: 0 }),
   // 将静态路由和动态路由组合到一起
