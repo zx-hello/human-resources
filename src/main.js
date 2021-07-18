@@ -31,6 +31,9 @@ import ckp from '@/utils/mixin'
 // 导入echarts插件
 import echartsPlugin from './utils/echarts'
 
+// 导入多语言组件实例
+import i18n from '@/lang'
+
 // 导入自定义指令
 // import * as 名字 from 'path' => 这样可以将所有导出放到一个对象上
 import * as directives from '@/directives'
@@ -61,7 +64,11 @@ Object.keys(directives).forEach(dname => {
 // set ElementUI lang to EN
 // Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
-Vue.use(ElementUI)
+// Vue.use(ElementUI)
+Vue.use(ElementUI, {
+  // 传入i18n实例，翻译element组件库的多语言
+  i18n: (k, v) => i18n.t(k, v)
+})
 
 // 挂载插件
 // use方法执行流程：
@@ -83,5 +90,7 @@ new Vue({
   router,
   // 挂载vuex
   store,
+  // 挂载翻译插的实例
+  i18n,
   render: h => h(App)
 })

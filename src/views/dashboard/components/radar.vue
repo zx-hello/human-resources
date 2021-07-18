@@ -73,8 +73,20 @@ export default {
       }
       this.list = data
 
+      /**
+       * 我们把创建一个echarts图表的代码封装成一个方法
+       * 多次调用这个方法创建图表的时候使用的dom节点都是同一个
+       * 每次都会init一个echarts实例，就会在控制台报如下警告
+       * There is a chart instance already initialized on the dom.
+       */
+      // 解决
+      let myChart = this.echarts.getInstanceByDom(this.$refs.radar)
+      if (myChart == null) {
+        myChart = this.echarts.init(this.$refs.radar)
+      }
+
       // 基于准备好的dom，初始化echarts实例
-      const myChart = this.echarts.init(this.$refs.radar)
+      // const myChart = this.echarts.init(this.$refs.radar)
       // 绘制图表 1. 准备对应的
       // 绘制的配置文件
       const opt = {

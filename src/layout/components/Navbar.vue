@@ -7,7 +7,13 @@
       @toggleClick="toggleSideBar"
     />
     <div class="app-breadcrumb">
-      巴啦啦神奇小魔仙
+      <!-- 巴啦啦神奇小魔仙 -->
+      <!-- 动态翻译 ===>$t 根据locale指定的语言包去读取这个语言包中对应属性翻译的结果
+           $t 是在main.js页面挂载的i18n实例里面的方法
+           用法：替换写死的方法====>{{ $t('要翻译文字在语言包中的属性名.属性名') }}
+           需要自己调用$t一个个翻译(体力活！！！)
+       -->
+      {{ $t("navbar.title") }}
       <span class="breadBtn">体验版</span>
     </div>
     <!-- 面包屑组件 导航菜单 -->
@@ -18,6 +24,10 @@
          2.展示登陆人信息
      -->
     <div class="right-menu">
+      <!-- 多语言组件 -->
+      <Lang class="rcon"></Lang>
+      <!-- 控制全屏 -->
+      <ScreenFull class="rcon"></ScreenFull>
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <!-- <img src="@/assets/common/bigUserHeader.png" class="user-avatar" /> -->
@@ -140,6 +150,13 @@ export default {
     float: right;
     height: 100%;
     line-height: 50px;
+
+    // 控制 全屏+多语言 图标的样式
+    .rcon {
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 16px;
+    }
 
     &:focus {
       outline: none;

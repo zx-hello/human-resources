@@ -1,5 +1,5 @@
 <template>
-  <el-calendar v-model="currentDate">
+  <el-calendar v-if="show" v-model="currentDate">
     <!-- #dateCell 具名插槽 插槽自定义日历单元格内容
          date 当前日期对象 通过new Date得到 ====>获取日期相关实例数据
          data 当前日期的数据 ====>data.day可以获取完整的处理过的年月日
@@ -16,10 +16,29 @@
 </template>
 
 <script>
+/**
+ * 问题：动态翻译element日历组件，星期不翻译问题--->重新刷新页面可以解决
+ * 根源：星期是写死的，除非组件被重新创建
+ * 解决：通过v-if销毁日历组件--->再重新创建
+ * 什么时候销毁？ $i18n.locale变化的时候--->使用watch监听其变化
+ */
 export default {
   data () {
     return {
-      currentDate: new Date()
+      currentDate: new Date(),
+      // 日历组件的显示
+      show: true
+    }
+  },
+  watch: {
+    // 监听一个对象上某个属性
+    async '$i18n.locale' (newValue) {
+      // console.log(newValue)
+      // 销毁组件
+      this.show = false
+      // 等到销毁成功后，重新创建
+      await this.$nextTick()
+      this.show = true
     }
   },
   methods: {

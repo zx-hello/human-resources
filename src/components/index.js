@@ -4,6 +4,8 @@ import PageTools from './PageTools'
 import UploadExcel from './UploadExcel'
 import ElDepSelect from './DepSel'
 import UploadImg from './UploadImg'
+import ScreenFull from './ScreenFull'
+import Lang from './Lang'
 
 // // vue插件写法：声明对象--->内部有nstall方法
 // export default {
@@ -21,7 +23,14 @@ import UploadImg from './UploadImg'
  * 2.循环数组注册所有组件
  */
 
-const components = [PageTools, UploadExcel, ElDepSelect, UploadImg]
+const components = [
+  PageTools,
+  UploadExcel,
+  ElDepSelect,
+  UploadImg,
+  ScreenFull,
+  Lang
+]
 
 export default {
   install (Vue) {

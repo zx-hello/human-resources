@@ -81,7 +81,7 @@ export const constantRoutes = [
     redirect: '/dashboard',
     children: [{
       path: 'dashboard',
-      name: 'Dashboard', // 后续权限控制会使用
+      name: 'dashboard', // 后续权限控制会使用
       component: () => import('@/views/dashboard/index'),
       meta: { title: '首页', icon: 'dashboard' }
     }]
